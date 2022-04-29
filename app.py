@@ -30,7 +30,7 @@ def hello():
             if(request.form.get(str(i))):
                 t.append(request.form.get(str(i)))
         return redirect('/fillinqueue')
-    return render_template('TaramaVacant.html')
+    return render_template('Vacant.html')
 
 
 @app.route('/fillinqueue', methods = ['GET', 'POST'])
@@ -40,13 +40,15 @@ def fill():
             if(request.form.get(str(i))):
                 q.append(request.form.get(str(i)))
         return redirect('/answers')
-    return render_template('TaramaWaiting.html')
+    return render_template('Waiting.html')
 
 @app.route('/answers')
 def display():
     for i in range(0, len(q)):
+        # print( int(q[i]))
         inqueue.insert(i, int(q[i]))
     for i in range(0, len(t)):
+        # print(t[i])
         insideTarama.insert(i, int(t[i]))
     for i in range(0, len(t)):
         currentstatus.insert(i, insideTarama[i])
@@ -85,13 +87,14 @@ def display():
                     arr[j], arr[j+1] = arr[j+1], arr[j] 
                     b[j], b[j+1] = b[j+1], b[j] 
 
-    capacity = 30
+    capacity = 50
     replacedpos = []
     l1 = []
     sumele = []
     waiting = []
     for i in inqueue1:
         waiting.append(i)
+
 
 
     def schedulecheck():
@@ -108,7 +111,13 @@ def display():
         while(True):
             bubble(insideTarama, currentstatus)
 
-
+            print('waiting time',waitingtime)
+            print('vacancy',Vacancy)
+            print('inside restaurant',insideTarama)
+            print('waiting',waiting)
+            print('inqueue',inqueue)
+            print('current status',currentstatus)
+            
             temp = 0
             for i in range(0, len(inqueue)):
                 if(Vacancy < minii(inqueue) or Vacancy == 0):
@@ -154,7 +163,7 @@ def display():
                 inqueue1[inqueue1.index(l1[-1][i])] = 0
 
             bubble(insideTarama, currentstatus)
-            
+           
 
 
             l1.clear()
@@ -175,6 +184,7 @@ def display():
     result.append(max(waiting) / len(inqueue1))
 
     return render_template('Report.html', result=result)
+    
 @app.route('/report')
 def generatepdf():
     # def drawMyRuler(pdf):
